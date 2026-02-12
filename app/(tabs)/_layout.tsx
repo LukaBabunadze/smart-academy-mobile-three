@@ -1,9 +1,11 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Tabs } from "expo-router";
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { CartCountContext } from "../_layout";
 
 const _layout = () => {
+  const cart = useContext(CartCountContext);
   return (
     <Tabs
       screenOptions={{
@@ -36,6 +38,7 @@ const _layout = () => {
           headerRight: () => (
             <View style={styles.bellIcon}>
               <AntDesign name="bell" size={20} color="black" />
+              <Text>{cart?.cartCount}</Text>
             </View>
           ),
         }}
@@ -45,7 +48,11 @@ const _layout = () => {
         options={{
           headerTitle: "პროფილი",
           tabBarIcon: ({ color, focused }) => (
-            <AntDesign name="user-switch" size={focused ? 24 : 22} color={color} />
+            <AntDesign
+              name="user-switch"
+              size={focused ? 24 : 22}
+              color={color}
+            />
           ),
         }}
       />

@@ -1,7 +1,10 @@
+import AppButton from "@/components/appButton/AppButton";
 import AppInput from "@/components/appInput/AppInput";
+import AppTitle from "@/components/appTitle/AppTitle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const Index = () => {
   const router = useRouter();
@@ -20,11 +23,12 @@ const Index = () => {
     const result = await response.json();
     if (result?.token) {
       router.replace("/(tabs)");
+      await AsyncStorage.setItem("user", JSON.stringify(result.token));
     }
   };
   return (
     <View>
-      <Text>Log In</Text>
+      <AppTitle title="Log In" />
       <AppInput
         placeholder="username"
         value="johnd"
@@ -36,18 +40,24 @@ const Index = () => {
         onChangeText={setPassword}
         secureTextEntry={true}
       />
-      <TouchableOpacity
+      <AppButton
         activeOpacity={0.4}
-        // disabled={username.length === 0 || password.length === 0}
-        onPress={handleSubmit}
-      >
-        <Text>Submit</Text>
-      </TouchableOpacity>
-      <Link href={"/(auth)/register"}>Go To Register</Link>
+        handlePress={handleSubmit}
+        title={"Submit"}
+      />
+      <Link href={"/(auth)/register"} style={styles.link} replace={true}>
+        Go To Register
+      </Link>
     </View>
   );
 };
 
 export default Index;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  link: {
+    textAlign: "center",
+    marginTop: 12,
+    color: "blue",
+  },
+});
